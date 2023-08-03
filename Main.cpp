@@ -1,4 +1,4 @@
-you// C++ code to implement an ATM and
+// C++ code to implement an ATM and
 // its basic functions
 #include <fstream>
 #include <iostream>
@@ -241,3 +241,99 @@ int atm::viewallusers()
         cout << "Error in opening file..";
         return 0;
     }
+// Read data from file
+    file1.read((char*)&a, sizeof(a));
+    while (!file1.eof()) {
+
+        // Display data on monitor
+        a.showData();
+        file1.read((char*)&a, sizeof(a));
+    }
+
+    // Close the file
+    file1.close();
+    return 0;
+}
+
+// Function to delete the user
+int atm::deleteuser(char* uname)
+{
+
+    atm a;
+
+    fstream original, temp;
+    original.open("aaa.txt", ios::in);
+    if (!original) {
+        cout << "\nfile not found";
+        return 0;
+    }
+    else {
+        temp.open("temp.txt",
+                  ios::out | ios::app);
+        original.read((char*)&a, sizeof(a));
+
+        // Till end of file is reached
+        while (!original.eof()) {
+
+            if (!strcmp(a.usernames(),
+                        uname)) {
+                cout << "data found "
+                     << "and deleted\n"
+                     << a.username
+                     << "\n";
+            }
+            else {
+                temp.write((char*)&a,
+                           sizeof(a));
+            }
+
+            original.read((char*)&a,
+                          sizeof(a));
+        }
+
+        original.close();
+        temp.close();
+        remove("aaa.txt");
+        rename("temp.txt", "aaa.txt");
+        a.viewallusers();
+    }
+    return 0;
+}
+
+// Function to update user by
+// depositing money
+void atm::updateuserasdeposit(char* uname)
+{
+
+    atm a;
+    fstream file, temp;
+    file.open("aaa.txt",
+              ios::in | ios::out | ios::ate);
+    temp.open("temp.txt",
+              ios::out | ios::app);
+    file.seekg(0);
+    file.read((char*)&a, sizeof(a));
+
+    // Till end of the file
+    while (!file.eof()) {
+        if (!strcmp(a.usernames(), uname)) {
+            int b;
+
+            cout << "\nEnter amount "
+                 << "to deposit:";
+            cin >> b;
+            a.balance = a.balance + b;
+            cout << "\nBalance is:"
+                 << a.balance;
+            temp.write((char*)&a, sizeof(a));
+        }
+        else {
+            temp.write((char*)&a, sizeof(a));
+        }
+        file.read((char*)&a, sizeof(a));
+    }
+    file.close();
+    temp.close();
+    remove("aaa.txt");
+    rename("temp.txt", "aaa.txt");
+}
