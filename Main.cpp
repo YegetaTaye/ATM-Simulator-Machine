@@ -200,3 +200,44 @@ mainmenu:
         break;
     }
 }
+// Function to add user
+int atm::adduser()
+{
+    atm a;
+
+    ofstream file;
+
+    // Open file in write mode
+    file.open("aaa.txt", ios::out | ios::app);
+    if (!file) {
+        cout << "Error in creating "
+             << "file.." << endl;
+        return 0;
+    }
+
+    // Read from user
+    a.getData();
+
+    // Write into file
+    file.write((char*)&a, sizeof(a));
+
+    // Close the file
+    file.close();
+
+    return 0;
+}
+
+// View Users
+int atm::viewallusers()
+{
+
+    atm a;
+
+    ifstream file1;
+
+    // Open file in read mode
+    file1.open("aaa.txt", ios::in);
+    if (!file1) {
+        cout << "Error in opening file..";
+        return 0;
+    }
