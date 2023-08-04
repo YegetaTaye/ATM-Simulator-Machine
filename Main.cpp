@@ -399,3 +399,58 @@ int atm::searchspecificuser(
         cout << "Error in opening file..";
         return 0;
     }
+
+// Read data from file
+    f.read((char*)&a, sizeof(a));
+    while (!f.eof()) {
+
+        if (!strcmp(a.usernames(), uname)) {
+            if (a.passwords() == pass) {
+                return 1;
+            }
+        }
+        f.read((char*)&a, sizeof(a));
+    }
+
+    // Close the file
+    f.close();
+    return 0;
+}
+
+// Search specific user
+int atm::searchallusertodisplay(
+    char* uname)
+{
+    atm a;
+    fstream file1;
+
+    // Open the file
+    file1.open("aaa.txt", ios::in);
+    if (!file1) {
+        cout << "Error in opening file..";
+        return 0;
+    }
+
+    // Read data from file
+    file1.read((char*)&a, sizeof(a));
+    while (!file1.eof()) {
+        if (!strcmp(a.usernames(), uname)) {
+            a.showData();
+            return 0;
+        }
+        file1.read((char*)&a, sizeof(a));
+    }
+
+    // Close the file
+    file1.close();
+    return 0;
+}
+
+// Driver Code
+int main()
+{
+    // Function Call
+    atmUser();
+
+    return 0;
+}
