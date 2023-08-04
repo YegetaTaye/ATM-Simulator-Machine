@@ -337,3 +337,65 @@ void atm::updateuserasdeposit(char* uname)
     remove("aaa.txt");
     rename("temp.txt", "aaa.txt");
 }
+
+// Function to update user by
+// depositing withdrawing money
+void atm::updateuseraswithdraw(char* uname)
+{
+
+    atm a;
+    fstream file, temp;
+    file.open("aaa.txt",
+              ios::in | ios::out | ios::ate);
+    temp.open("temp.txt",
+              ios::out | ios::app);
+    file.seekg(0);
+    file.read((char*)&a, sizeof(a));
+
+    // Till end of file is reached
+    while (!file.eof()) {
+        if (!strcmp(a.usernames(), uname)) {
+            int b;
+            cout << "\nEnter amount "
+                 << "to withdraw:";
+            cin >> b;
+            if (a.balance < b) {
+                cout
+                    << "\nInsufficient "
+                    << "balance to withdraw";
+            }
+            else {
+                a.balance = a.balance - b;
+                temp.write((char*)&a,
+                           sizeof(a));
+                cout << "\nBalance is:"
+                     << a.balance;
+            }
+        }
+        else {
+            temp.write((char*)&a,
+                       sizeof(a));
+        }
+        file.read((char*)&a, sizeof(a));
+    }
+
+    // Close the file
+    file.close();
+    temp.close();
+    remove("aaa.txt");
+    rename("temp.txt", "aaa.txt");
+}
+
+// Search user
+int atm::searchspecificuser(
+    char* uname, int pass)
+{
+    atm a;
+    fstream f;
+
+    // Open the file
+    f.open("aaa.txt", ios::in);
+    if (!f) {
+        cout << "Error in opening file..";
+        return 0;
+    }
